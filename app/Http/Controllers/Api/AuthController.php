@@ -18,10 +18,6 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
