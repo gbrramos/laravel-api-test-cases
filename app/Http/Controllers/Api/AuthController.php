@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -26,7 +27,6 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json([
-                'status' => 'error',
                 'message' => 'Unauthorized',
             ], 401);
         }
@@ -44,21 +44,32 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+            try
+            {
+                $userExists = User::where('email', $request['email'])->count();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+                if($userExists > 0)
+                    return response()->json([
+                        'message' => 'The email has already been taken.',
+                    ], 409);
 
-        return response()->json([
-            'message' => 'User created successfully',
-            'user' => $user,
-        ]);
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                ]);
+
+                return response()->json([
+                    'message' => 'User created successfully',
+                    'user' => $user,
+                ]);
+        }
+        catch(Exception $th)
+        {
+            return response()->json([
+                'message' => 'Error creating user',
+            ], 500);
+        }
+
     }
 }

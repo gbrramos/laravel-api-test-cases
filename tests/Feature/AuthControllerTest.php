@@ -13,6 +13,7 @@ class AuthControllerTest extends TestCase
      * @return void
      */
 
+
     public function testUserShouldNotAuthenticate()
     {
         $payload = [
@@ -23,7 +24,7 @@ class AuthControllerTest extends TestCase
         $request = $this->post('api/login', $payload);
 
         $request->assertStatus(401);
-        $request->assertJson(['status'=> 'error', 'message'=> 'Unauthorized']);
+        $request->assertJson(['message'=> 'Unauthorized']);
     }
 
     public function testUserCanAuthenticate()
@@ -44,6 +45,4 @@ class AuthControllerTest extends TestCase
         $request->assertStatus(200);
         $request->assertJsonStructure(['status', 'user', 'authorization']);
     }
-
-
 }
