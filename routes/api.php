@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function() {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
+    Route::post('authenticate', 'authenticate')->name('authenticate');
+    Route::post('register', 'register')->name('register');
 });
 
 Route::controller(TodoController::class)->group(function() {

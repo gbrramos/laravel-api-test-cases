@@ -13,7 +13,6 @@ class AuthControllerTest extends TestCase
      * @return void
      */
 
-
     public function testUserShouldNotAuthenticate()
     {
         $payload = [
@@ -21,7 +20,7 @@ class AuthControllerTest extends TestCase
             "password" => "secret123"
         ];
 
-        $request = $this->post('api/login', $payload);
+        $request = $this->post(route('authenticate'), $payload);
 
         $request->assertStatus(401);
         $request->assertJson(['message'=> 'Unauthorized']);
@@ -38,7 +37,7 @@ class AuthControllerTest extends TestCase
             'password' => 'secret123'
         ];
 
-        $request = $this->post('api/login', $payload);
+        $request = $this->post(route('authenticate'), $payload);
 
         User::find($user->id)->delete();
 

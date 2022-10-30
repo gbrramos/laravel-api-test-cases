@@ -13,10 +13,10 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['authenticate','register']]);
     }
 
-    public function login(Request $request)
+    public function authenticate(Request $request)
     {
         $request->validate([
             'email' => 'required|string|email',
