@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only(['email', 'password']);
 
         $token = Auth::attempt($credentials);
         if (!$token) {

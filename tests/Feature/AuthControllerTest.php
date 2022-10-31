@@ -23,7 +23,7 @@ class AuthControllerTest extends TestCase
         $request = $this->post(route('authenticate'), $payload);
 
         $request->assertStatus(401);
-        $request->assertJson(['message'=> 'Unauthorized']);
+        $request->assertJson(['message'=>'Unauthorized']);
     }
 
     public function testUserCanAuthenticate()
