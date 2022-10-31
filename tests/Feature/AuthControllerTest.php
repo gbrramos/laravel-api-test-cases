@@ -39,8 +39,6 @@ class AuthControllerTest extends TestCase
 
         $request = $this->post(route('authenticate'), $payload);
 
-        User::find($user->id)->delete();
-
         $request->assertStatus(200);
         $request->assertJsonStructure(['status', 'user', 'authorization']);
     }

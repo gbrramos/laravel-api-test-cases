@@ -8,17 +8,20 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
 
     public function index()
     {
         $todos = Todo::all();
+
+        if(count($todos) <= 0)
+        {
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
+
         return response()->json([
-            'status' => 'success',
             'todos' => $todos,
-        ]);
+        ], 200);
     }
 }

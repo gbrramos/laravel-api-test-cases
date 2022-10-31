@@ -1,21 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ConfigController;
 use App\Http\Controllers\Api\TodoController;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(AuthController::class)->group(function() {
-    Route::post('authenticate', 'authenticate')->name('authenticate');
-    Route::post('register', 'register')->name('register');
+Route::middleware('auth:api')->group(function () {
+    Route::get('todos',[TodoController::class, 'index'])->name('todos');
 });
 
-Route::controller(TodoController::class)->group(function() {
-    Route::get('todos', 'index');
-});
+Route::post('authenticate',[AuthController::class, 'authenticate'])->name('authenticate');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 
-Route::any('{slug}', function () {
-    return response()->json([
-        'message' => 'Route not found',
-    ], 404);
-});
 
+Route::any('{provider}', [ConfigController::class, 'config']);
